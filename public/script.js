@@ -1,13 +1,15 @@
+const origin = document.location.origin;
+
 async function clearEvents() {
   const transactionId = document.getElementById("transactionId")?.innerText;
   if (!transactionId) {
     return;
   }
 
-  window.alert("reset events: Are you sure? This operation cannot be reversed.")
+  if (!window.confirm("reset events: Are you sure? This operation cannot be reversed.")) { return }
 
   try {
-    await fetch("http://localhost:8787/api/v1/events/transaction", {
+    await fetch(`${origin}/api/v1/events/transaction`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +39,7 @@ async function fetchEvents() {
   }
 
   try {
-    const response = await fetch(`http://localhost:8787/api/events?transactionId=${transactionId}`);
+    const response = await fetch(`${origin}/api/events?transactionId=${transactionId}`);
     const data = await response.json();
 
     const eventElement = document.getElementById("events");
@@ -86,7 +88,7 @@ async function replay(offset) {
       return;
     }
 
-    const response = await fetch(`http://localhost:8787/api/v1/transaction/replay?offset=${offset}&transactionId=${transactionId}`);
+    const response = await fetch(`${origin}/api/v1/transaction/replay?offset=${offset}&transactionId=${transactionId}`);
     const data = await response.json();
 
     const replayInvoiceAmountElement = document.getElementById("replay-invoice-amount");
@@ -123,7 +125,7 @@ async function fetchLatestTransaction() {
       return;
     }
 
-    const response = await fetch(`http://localhost:8787/api/v1/transaction/latest?transactionId=${transactionId}`);
+    const response = await fetch(`${origin}/api/v1/transaction/latest?transactionId=${transactionId}`);
     const data = await response.json();
 
     if (Object.keys(data["data"]).length > 0) {
@@ -153,7 +155,7 @@ async function createStartTransactionEvent() {
   }
 
   try {
-    const response = await fetch("http://localhost:8787/api/v1/events/transactions/startTransactionEvent", {
+    const response = await fetch(`${origin}/api/v1/events/transactions/startTransactionEvent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -195,7 +197,7 @@ async function createPaymentEvent() {
   }
 
   try {
-    const response = await fetch("http://localhost:8787/api/v1/events/transactions/paymentEvent", {
+    const response = await fetch(`${origin}/api/v1/events/transactions/paymentEvent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -222,10 +224,10 @@ async function createResetTransactionEvent() {
     return;
   }
 
-  window.alert("reset transaction: Are you sure? This operation cannot be reversed.")
+  if (!window.confirm("reset transaction: Are you sure? This operation cannot be reversed.")) { return }
 
   try {
-    await fetch("http://localhost:8787/api/v1/events/transactions/resetTransactionEvent", {
+    await fetch(`${origin}/api/v1/events/transactions/resetTransactionEvent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -250,7 +252,7 @@ async function createEndTransactionEvent() {
   }
 
   try {
-    const response = await fetch("http://localhost:8787/api/v1/events/transactions/endTransactionEvent", {
+    const response = await fetch(`${origin}/api/v1/events/transactions/endTransactionEvent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
