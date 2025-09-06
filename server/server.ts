@@ -1,6 +1,4 @@
 import { Hono } from 'hono'
-import { serve } from '@hono/node-server'
-import { serveStatic } from '@hono/node-server/serve-static'
 import replay from './events/transaction/replay'
 import StartTransactionEvent from './events/transaction/startTransactionEvent'
 import PaymentEvent from './events/transaction/paymentEvent'
@@ -11,9 +9,6 @@ import { TransactionId } from './models/transaction'
 
 const app = new Hono();
 const onMemoryStore: Map<TransactionId, TransactionEvent[]> = new Map();
-
-app.use('/', serveStatic({ path: './public/index.html' }))
-app.use('/script.js', serveStatic({ path: './public/script.js' }))
 
 app.get('/api/events', (c) => {
   const transactionId = c.req.query("transactionId");
@@ -139,10 +134,7 @@ app.post("/api/v1/events/transactions/endTransactionEvent", async (c) => {
   return c.json({ data: {} });
 });
 
-const port = 8787;
-console.log(`Server is running on http://localhost:${port}`)
+console.log(`Server is running on http://localhost`)
 
-serve({
-  fetch: app.fetch,
-  port,
-})
+export default app;
+
