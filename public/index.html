@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <script src="script.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        fetchEvents();
+        fetchLatestTransaction();
+      });
+    </script>
+    <title>toy event sourceing application</title>
+  </head>
+  <body>
+    <h1>Toy Event Sourceing Application</h1>
+    <div
+      id="replay-modal"
+      style="
+        display: none;
+        z-index: 2;
+        position: absolute;
+        width: 80%;
+        height: 80%;
+        background: #ddd;
+      "
+    >
+      <div style="display: flex; justify-content: space-around">
+        <div>
+          <h2>Replay transaction</h2>
+          <p>invoice amount: <span id="replay-invoice-amount"></span></p>
+          <p>invoice date: <span id="replay-invoice-date"></span></p>
+          <p>total payment amount: <span id="replay-payment-amount"></span></p>
+        </div>
+        <div>
+          <p onclick="onCloseModal()" style="font-size: 20px">x</p>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex">
+      <div style="margin-right: 40px">
+        <div id="latest-transaction" style="display: none">
+          <h2>Latest Transaction</h2>
+          <p>trasaction id: <span id="transactionId"></span></p>
+          <div>
+            <div>
+              <p>invoice amount: <span id="dis-invoiceAmount"></span></p>
+              <p>invoice date: <span id="dis-invoiceDate"></span></p>
+              <p>total payment: <span id="totalPayment">0</span></p>
+              <p>status : <span id="transaction-status">unpaid</span></p>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex">
+          <div id="invoice-eria">
+            <h2>invoice</h2>
+            <div>
+              <label>invoice amount</label>
+              <input type="number" id="invoiceAmount" />
+            </div>
+            <div>
+              <label>invoice date</label>
+              <input type="date" id="invoiceDate" value="2010-07-28" />
+            </div>
+            <button
+              style="margin-top: 20px"
+              onclick="createStartTransactionEvent()"
+            >
+              start transaction
+            </button>
+          </div>
+          <div id="payment-eria" style="display: none">
+            <h2>payment</h2>
+            <div style="display: flex">
+              <div>
+                <label>payment amount</label>
+                <input type="number" id="paymentAmount" />
+              </div>
+              <button style="margin-left: 10px" onclick="createPaymentEvent()">
+                start payment
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="transaction-eria" style="display: none; margin-top: 10px">
+          <button onclick="createResetTransactionEvent()">
+            reset transaction
+          </button>
+          <button onclick="createEndTransactionEvent()">end transaction</button>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; align-items: center; width: 40vw">
+          <h2>event log</h2>
+          <button style="margin-left: 20px" onclick="clearEvents()">
+            clear event
+          </button>
+        </div>
+        <div id="events" style="overflow-y: scroll; max-height: 600px"></div>
+      </div>
+    </div>
+  </body>
+</html>
